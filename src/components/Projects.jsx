@@ -17,7 +17,7 @@ const projects = [
       'Queued jobs system for async tasks & emails',
       'Integrations: PayPal, MailChimp, Microsoft Graph, GeoIP2',
     ],
-    tech: ['PHP', 'SilverStripe', 'GraphQL', 'Elasticsearch', 'Stripe Connect', 'PayPal', 'MySQL', 'Docker'],
+    tech: ['PHP', 'SilverStripe', 'GraphQL', 'Elasticsearch', 'Stripe Connect', 'MySQL', 'Docker'],
     accent: '#6366f1',
     accentBg: 'rgba(99,102,241,0.08)',
     icon: (
@@ -41,10 +41,10 @@ const projects = [
       'IoT Smart Lock integration (Sciener API)',
       'Real-time sauna passcode generation',
       'Multi-service microservices architecture',
-      'React Native mobile app for guests',
       'Admin dashboard with Chart.js analytics',
+      'Stripe-powered gym membership & booking payments',
     ],
-    tech: ['Next.js', 'React Native', 'Node.js', 'Chakra UI', 'Chart.js', 'IoT API', 'PostgreSQL', 'Redis'],
+    tech: ['Next.js', 'Node.js', 'Chakra UI', 'Chart.js', 'IoT API', 'PostgreSQL', 'Redis'],
     accent: '#22d3ee',
     accentBg: 'rgba(34,211,238,0.08)',
     icon: (
@@ -279,45 +279,51 @@ function ProjectCard({ project, index }) {
 const moreProjects = [
   {
     name: 'PlatfirmAI',
-    desc: 'AI-powered platform built and shipped in 5 weeks.',
+    desc: 'AI-powered WordPress platform, built and shipped in 5 weeks.',
     status: 'done',
     date: 'Oct – Nov 2024',
     emoji: '🤖',
+    tech: 'WordPress',
   },
   {
     name: 'Nova Therapies',
-    desc: 'Therapy services platform. Full delivery from kickoff to launch.',
+    desc: 'Therapy services website — WordPress build from kickoff to launch.',
     status: 'done',
     date: 'Sep – Nov 2024',
     emoji: '✨',
+    tech: 'WordPress',
   },
   {
     name: 'Safety Roof Anchor',
-    desc: 'Safety equipment product & compliance web platform.',
+    desc: 'Safety equipment product site and compliance platform on WordPress.',
     status: 'done',
     date: 'Sep – Nov 2024',
     emoji: '🏗️',
+    tech: 'WordPress',
   },
   {
     name: 'Frootmap',
-    desc: 'Produce discovery & mapping platform, ongoing feature development.',
-    status: 'progress',
-    date: 'Nov 2024 – present',
+    desc: 'Produce discovery & mapping platform. On hold — awaiting client.',
+    status: 'pending',
+    date: 'Nov 2024',
     emoji: '🥑',
+    tech: 'WordPress',
   },
   {
     name: 'Internal Webs',
-    desc: 'Internal tools & websites for SDT, Vafe, and Upscalix.',
+    desc: 'Internal tools & websites for SDT, Vafe, and Upscalix on WordPress.',
     status: 'maintenance',
     date: 'Jul – Dec 2024',
     emoji: '🌐',
+    tech: 'WordPress',
   },
   {
     name: 'TGOC',
-    desc: 'Delivered and handed off to client.',
+    desc: 'WordPress site delivered and handed off to client.',
     status: 'done',
     date: '2024',
     emoji: '📦',
+    tech: 'WordPress',
   },
 ]
 
@@ -325,6 +331,7 @@ const statusMap = {
   done:        { label: 'Shipped', color: '#10b981' },
   progress:    { label: 'In progress', color: '#6366f1' },
   maintenance: { label: 'Maintenance', color: '#f59e0b' },
+  pending:     { label: 'Pending', color: '#64748b' },
 }
 
 function MoreProjects() {
@@ -363,7 +370,10 @@ function MoreProjects() {
             </div>
             <p className="more-name">{p.name}</p>
             <p className="more-desc">{p.desc}</p>
-            <p className="more-date">{p.date}</p>
+            <div className="more-footer">
+              <p className="more-date">{p.date}</p>
+              {p.tech && <span className="more-tech">{p.tech}</span>}
+            </div>
           </motion.div>
         ))}
       </div>
@@ -424,12 +434,25 @@ function MoreProjects() {
           line-height: 1.6;
           flex-grow: 1;
         }
+        .more-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 0.25rem;
+          gap: 0.5rem;
+        }
         .more-date {
           font-family: 'Fira Code', monospace;
           font-size: 0.68rem;
           color: var(--text-muted);
           opacity: 0.6;
-          margin-top: 0.25rem;
+        }
+        .more-tech {
+          font-family: 'Fira Code', monospace;
+          font-size: 0.65rem;
+          color: var(--text-muted);
+          opacity: 0.5;
+          white-space: nowrap;
         }
       `}</style>
     </motion.div>

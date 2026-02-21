@@ -9,13 +9,8 @@ const techGroups = [
   },
   {
     label: 'Backend',
-    items: ['Node.js', 'Express', 'PHP', 'SilverStripe', 'Django', 'FastAPI', 'GraphQL', 'REST APIs'],
+    items: ['Node.js', 'Express', 'PHP', 'SilverStripe', 'WordPress', 'Django', 'FastAPI', 'GraphQL', 'REST APIs'],
     accent: '#22d3ee',
-  },
-  {
-    label: 'Mobile',
-    items: ['Capacitor', 'React Native', 'iOS', 'Android', 'PWA'],
-    accent: '#ec4899',
   },
   {
     label: 'Data & Cloud',
@@ -90,7 +85,7 @@ export default function About() {
               Mathematics graduate from{' '}
               <span className="about-highlight">Universitas Diponegoro</span> turned
               full stack developer. I started in backend engineering and grew into
-              owning full product stacks — APIs, frontends, databases, and deployments.
+              owning full product stacks — APIs, frontends, and databases across Node.js, PHP/SilverStripe, and WordPress.
             </p>
             <p>
               Currently at <span className="about-highlight">Upscalix</span> as
