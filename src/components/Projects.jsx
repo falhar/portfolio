@@ -1,5 +1,5 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
 
 const projects = [
   {
@@ -20,6 +20,45 @@ const projects = [
     tech: ['PHP', 'SilverStripe', 'GraphQL', 'Elasticsearch', 'Stripe Connect', 'MySQL', 'Docker'],
     accent: '#6366f1',
     accentBg: 'rgba(99,102,241,0.08)',
+    detail: {
+      overview: 'ENPNT is an Australian dance and fitness marketplace that connects students, instructors, and studios on a single platform. The product covers class discovery, slot booking, multi-vendor e-commerce, and digital membership management. I was brought in as the sole backend developer — responsible for the entire server-side stack while the frontend team built the Next.js consumer app on top of my API.',
+      objectives: [
+        'Build a scalable, multi-tenant CMS backend that supports multiple studios and instructors on a single instance',
+        'Expose a clean GraphQL API for the Next.js frontend to consume for all data operations',
+        'Enable multi-vendor payouts so studios receive funds directly via Stripe Connect',
+        'Integrate deep third-party services (search, payments, email, calendar, geolocation)',
+        'Keep the system reliable under load with async job processing for heavy operations',
+      ],
+      responsibilities: [
+        'Designed and maintained all SilverStripe 4 data models, relations, and CMS page types',
+        'Built and versioned the entire GraphQL schema — queries, mutations, and custom resolvers',
+        'Implemented Stripe Connect onboarding, payment splits, and webhook reconciliation',
+        'Integrated Elasticsearch for full-text search with custom analyzers and relevance tuning',
+        'Built a queued jobs system for email automation, report generation, and async API calls',
+        'Integrated PayPal, MailChimp (mailing lists), Microsoft Graph (calendar sync), and GeoIP2 (location detection)',
+        'Containerized the dev environment with Docker for consistent local and CI builds',
+      ],
+      challenges: [
+        {
+          problem: 'GraphQL N+1 query problem',
+          solution: 'Implemented DataLoader-style batching within SilverStripe resolvers — grouped child queries and fetched them in single SQL calls rather than per-item, cutting query counts by ~80% on list endpoints.',
+        },
+        {
+          problem: 'Complex Stripe Connect multi-vendor settlement flows',
+          solution: 'Built custom transfer and payout logic with idempotency keys and a webhook handler to reconcile disputes, refunds, and partial payouts — ensuring studios always receive the correct split without double-processing.',
+        },
+        {
+          problem: 'Elasticsearch relevance for fitness-specific queries',
+          solution: 'Wrote custom analyzers with edge n-gram tokenizers for partial matching on class names and studio tags, plus field boosting to prioritise proximity and schedule relevance over raw text score.',
+        },
+      ],
+      impact: [
+        'Platform actively serving studios and students in production since launch',
+        'Multi-vendor payouts process cleanly with full audit trail and zero manual reconciliation',
+        'Elasticsearch reduced average search response time vs previous SQL LIKE query approach',
+        'Queued job system handles all email campaigns and report exports without blocking API responses',
+      ],
+    },
     icon: (
       <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="24" cy="12" r="7" stroke="#6366f1" strokeWidth="2"/>
@@ -47,6 +86,45 @@ const projects = [
     tech: ['Next.js', 'Node.js', 'Chakra UI', 'Chart.js', 'IoT API', 'PostgreSQL', 'Redis'],
     accent: '#22d3ee',
     accentBg: 'rgba(34,211,238,0.08)',
+    detail: {
+      overview: 'Solace is a SaaS platform for gym and wellness centre operators that replaces physical key handoffs with IoT-connected smart locks. Guests book a sauna slot, pay online, and receive a time-limited digital passcode — no staff interaction needed. Operators get a real-time admin dashboard with booking management, analytics, and remote lock control. I built both the backend API and the admin frontend.',
+      objectives: [
+        'Digitise sauna access control — eliminate manual key handoffs and reception bottlenecks',
+        'Integrate reliably with Sciener IoT smart lock hardware over their API',
+        'Provide gym operators a real-time dashboard to monitor bookings and lock status',
+        'Support multiple gyms on a single platform with isolated data and settings',
+        'Handle Stripe billing for memberships, one-off bookings, and pay-as-you-go access',
+      ],
+      responsibilities: [
+        'Built the Node.js (Express) backend API that interfaces with the Sciener IoT lock API',
+        'Implemented time-limited passcode generation and automatic revocation on booking expiry',
+        'Architected a microservices structure — separate services for bookings, locks, payments, and notifications',
+        'Developed the Next.js + Chakra UI admin dashboard with live booking tables and Chart.js usage analytics',
+        'Designed the PostgreSQL schema for multi-gym tenancy, bookings, and access logs',
+        'Added Redis caching layer for frequently read gym configurations and lock states',
+        'Integrated Stripe Checkout for membership plans and per-session payments',
+      ],
+      challenges: [
+        {
+          problem: 'IoT hardware latency and unreliable lock responses',
+          solution: 'Built a retry queue with exponential backoff for all lock commands — if a passcode write times out, the system retries up to 3 times and falls back to a pre-generated backup code, with an alert sent to the operator.',
+        },
+        {
+          problem: 'Real-time access scheduling across time zones',
+          solution: 'Standardised all booking timestamps as UTC in the database and converted to the gym\'s configured local timezone only at display time — eliminating DST-related double-booking bugs that appeared during the initial test phase.',
+        },
+        {
+          problem: 'Dashboard performance with concurrent bookings during peak hours',
+          solution: 'Introduced Redis caching on gym-level config reads (TTL 60s) and paginated all booking list APIs — dashboard load time dropped significantly once the unbounded SQL joins were replaced.',
+        },
+      ],
+      impact: [
+        'Gym operators eliminated front-desk check-in for sauna sessions entirely',
+        'Guests receive access passcodes on any device — no native app required',
+        'Booking conflicts and double-access incidents dropped to zero after timezone fix',
+        'Platform handles multiple gym sites from a single operator dashboard',
+      ],
+    },
     icon: (
       <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="8" y="20" width="32" height="22" rx="4" stroke="#22d3ee" strokeWidth="2"/>
@@ -74,6 +152,45 @@ const projects = [
     tech: ['React', 'Vite', 'Node.js', 'MongoDB', 'Azure AD', 'Apple Wallet', 'Stripe', 'MS Dynamics'],
     accent: '#ec4899',
     accentBg: 'rgba(236,72,153,0.08)',
+    detail: {
+      overview: 'Wavecards is an enterprise SaaS platform that replaces physical business cards with dynamic digital profiles. Users create a branded card, share it via QR code or NFC, and contacts are automatically pushed into CRM systems. The platform serves real estate agencies, financial advisers, and enterprise sales teams in Australia. I joined as one of the early developers, owned several core feature areas, and now maintain the infrastructure and codebase.',
+      objectives: [
+        'Give enterprise clients a seamless way to sync contact exchanges directly into their CRM of choice',
+        'Enable professionals to store and share their digital card via Apple Wallet and Google Wallet',
+        'Rebuild the payment system to handle Australian GST compliance automatically',
+        'Maintain platform reliability and performance as the user base scaled',
+        'Establish CI/CD pipelines for consistent and safe deployments across multiple servers',
+      ],
+      responsibilities: [
+        'Built MS Dynamics 365 CRM integration from scratch — MSAL OAuth flow, contact sync, and field mapping',
+        'Implemented HubSpot CRM sync with webhook-driven contact updates and custom property mapping',
+        'Integrated Rex CRM (popular in Australian real estate) with card-to-contact automation',
+        'Built Apple Wallet .pkpass generation with certificate signing via Node.js crypto',
+        'Redesigned the Stripe payment flow with automatic GST calculation and invoice generation',
+        'Set up CI/CD pipelines and multi-server deploy scripts using GitHub Actions and PM2',
+        'Now: managing server infra (VPS, VPN, SSL), MongoDB upgrades, query optimisation, and PR review',
+      ],
+      challenges: [
+        {
+          problem: 'MS Dynamics 365 OAuth complexity and token management',
+          solution: 'Implemented MSAL (Microsoft Authentication Library) with a server-side token cache and automatic refresh logic — abstracting the OAuth handshake away from the CRM sync service so it could focus purely on data mapping.',
+        },
+        {
+          problem: 'Apple Wallet .pkpass certificate signing without an Apple backend SDK',
+          solution: 'Used Node.js\'s built-in crypto module to sign .pkpass bundles with the Apple-issued certificate — managed the certificate lifecycle (renewals, revocations) and built a generator that produces valid, scannable passes for any card.',
+        },
+        {
+          problem: 'MongoDB performance degradation as data volume grew',
+          solution: 'Ran query profiling to identify slow operations, added compound indexes on frequently filtered fields, rewrote aggregation pipelines to filter early, and coordinated a zero-downtime MongoDB major version upgrade.',
+        },
+      ],
+      impact: [
+        'Enterprise clients (real estate agencies, financial firms) onboarded with native CRM sync',
+        'Apple Wallet adoption simplified the sales handoff workflow for Rex CRM users in real estate',
+        'GST auto-collection eliminated manual tax processing for the billing team',
+        'CI/CD pipelines reduced deployment risk and allowed faster, safer releases across environments',
+      ],
+    },
     icon: (
       <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="4" y="12" width="40" height="26" rx="5" stroke="#ec4899" strokeWidth="2"/>
@@ -94,7 +211,305 @@ const cardVariants = {
   }),
 }
 
-function ProjectCard({ project, index }) {
+function DetailSection({ title, accent, children }) {
+  return (
+    <div className="detail-section">
+      <div className="detail-section-heading">
+        <span className="detail-section-bar" style={{ background: accent }} />
+        <h4 className="detail-section-title">{title}</h4>
+      </div>
+      {children}
+    </div>
+  )
+}
+
+function ProjectModal({ project, onClose }) {
+  const { detail, accent, accentBg } = project
+
+  return (
+    <motion.div
+      className="modal-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="modal-panel"
+        initial={{ opacity: 0, x: 60 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 60 }}
+        transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+        onClick={(e) => e.stopPropagation()}
+        style={{ '--accent': accent, '--accent-bg': accentBg }}
+      >
+        {/* Modal header */}
+        <div className="modal-header">
+          <div>
+            <div className="modal-year">{project.year}</div>
+            <h3 className="modal-title">{project.name}</h3>
+            <p className="modal-tagline">{project.tagline}</p>
+          </div>
+          <button className="modal-close" onClick={onClose} aria-label="Close">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        {/* Role + tech badges */}
+        <div className="modal-meta">
+          <span className="card-role-badge">{project.role}</span>
+          <div className="modal-tech">
+            {project.tech.map((t) => (
+              <span key={t} className="card-badge">{t}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Scrollable body */}
+        <div className="modal-body">
+
+          {/* Overview */}
+          <DetailSection title="Project Overview" accent={accent}>
+            <p className="detail-text">{detail.overview}</p>
+          </DetailSection>
+
+          {/* Objectives */}
+          <DetailSection title="Objectives" accent={accent}>
+            <ul className="detail-list">
+              {detail.objectives.map((o, i) => (
+                <li key={i} className="detail-list-item">
+                  <span className="detail-dot" style={{ background: accent }} />
+                  {o}
+                </li>
+              ))}
+            </ul>
+          </DetailSection>
+
+          {/* Key Responsibilities */}
+          <DetailSection title="Key Responsibilities" accent={accent}>
+            <ul className="detail-list">
+              {detail.responsibilities.map((r, i) => (
+                <li key={i} className="detail-list-item">
+                  <span className="detail-dot" style={{ background: accent }} />
+                  {r}
+                </li>
+              ))}
+            </ul>
+          </DetailSection>
+
+          {/* Challenges & Solutions */}
+          <DetailSection title="Technical Challenges & Solutions" accent={accent}>
+            <div className="detail-challenges">
+              {detail.challenges.map((c, i) => (
+                <div key={i} className="challenge-block" style={{ '--accent-bg': accentBg, '--accent': accent }}>
+                  <p className="challenge-problem">
+                    <span className="challenge-label">Problem</span>
+                    {c.problem}
+                  </p>
+                  <p className="challenge-solution">
+                    <span className="challenge-label">Solution</span>
+                    {c.solution}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </DetailSection>
+
+          {/* Impact */}
+          <DetailSection title="Impact & Results" accent={accent}>
+            <ul className="detail-list">
+              {detail.impact.map((im, i) => (
+                <li key={i} className="detail-list-item detail-list-item--impact">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, marginTop: 3 }}>
+                    <path d="M2.5 7l3 3 6-6" stroke={accent} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {im}
+                </li>
+              ))}
+            </ul>
+          </DetailSection>
+
+        </div>
+
+        <style>{`
+          .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: flex-end;
+          }
+          .modal-panel {
+            width: 100%;
+            max-width: 580px;
+            height: 100%;
+            background: #0d0d14;
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+          }
+          .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 2rem 2rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+          }
+          .modal-year {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.3rem;
+          }
+          .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text);
+          }
+          .modal-tagline {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+          }
+          .modal-close {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+            flex-shrink: 0;
+          }
+          .modal-close:hover { border-color: var(--accent); color: var(--text); }
+          .modal-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+          }
+          .modal-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+          }
+          .modal-body {
+            overflow-y: auto;
+            flex: 1;
+            padding: 1.75rem 2rem 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+          }
+          .modal-body::-webkit-scrollbar { width: 4px; }
+          .modal-body::-webkit-scrollbar-track { background: transparent; }
+          .modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+          .detail-section { display: flex; flex-direction: column; gap: 0.9rem; }
+          .detail-section-heading {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+          }
+          .detail-section-bar {
+            display: inline-block;
+            width: 3px;
+            height: 1rem;
+            border-radius: 2px;
+            flex-shrink: 0;
+          }
+          .detail-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+          }
+          .detail-text {
+            font-size: 0.9rem;
+            line-height: 1.75;
+            color: var(--text-muted);
+          }
+          .detail-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+          }
+          .detail-list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            font-size: 0.875rem;
+            line-height: 1.55;
+            color: var(--text-muted);
+          }
+          .detail-list-item--impact { color: var(--text); }
+          .detail-dot {
+            flex-shrink: 0;
+            margin-top: 7px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+          }
+          .detail-challenges {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          .challenge-block {
+            padding: 1rem 1.1rem;
+            border-radius: 10px;
+            background: var(--accent-bg);
+            border: 1px solid var(--accent)22;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+          }
+          .challenge-problem,
+          .challenge-solution {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+          }
+          .challenge-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+          }
+          @media (max-width: 640px) {
+            .modal-panel { max-width: 100%; border-left: none; border-top: 1px solid var(--border); }
+            .modal-overlay { align-items: flex-end; }
+            .modal-panel { height: 92%; border-radius: 16px 16px 0 0; }
+          }
+        `}</style>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+function ProjectCard({ project, index, onOpen }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
@@ -144,6 +559,14 @@ function ProjectCard({ project, index }) {
           <span key={t} className="card-badge">{t}</span>
         ))}
       </div>
+
+      {/* Details button */}
+      <button className="card-details-btn" onClick={() => onOpen(project)} data-hover>
+        <span>View full summary</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
 
       {/* Bottom accent line */}
       <div className="card-accent-bar" />
@@ -246,7 +669,6 @@ function ProjectCard({ project, index }) {
           display: flex;
           flex-wrap: wrap;
           gap: 0.4rem;
-          margin-top: auto;
         }
         .card-badge {
           font-family: 'Fira Code', monospace;
@@ -261,6 +683,27 @@ function ProjectCard({ project, index }) {
         .project-card:hover .card-badge {
           border-color: var(--accent, var(--indigo))33;
           color: var(--text);
+        }
+        .card-details-btn {
+          margin-top: auto;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          background: none;
+          border: 1px solid var(--border);
+          color: var(--text-muted);
+          font-size: 0.8rem;
+          font-weight: 500;
+          padding: 0.5rem 0.9rem;
+          border-radius: 8px;
+          cursor: pointer;
+          align-self: flex-start;
+          transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+        .card-details-btn:hover {
+          border-color: var(--accent, var(--indigo))66;
+          color: var(--text);
+          background: var(--accent-bg);
         }
         .card-accent-bar {
           position: absolute;
@@ -462,6 +905,7 @@ function MoreProjects() {
 export default function Projects() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
+  const [activeProject, setActiveProject] = useState(null)
 
   return (
     <section id="projects" className="projects-section">
@@ -487,13 +931,20 @@ export default function Projects() {
 
         <div className="projects-grid">
           {projects.map((p, i) => (
-            <ProjectCard key={p.id} project={p} index={i} />
+            <ProjectCard key={p.id} project={p} index={i} onOpen={setActiveProject} />
           ))}
         </div>
 
         {/* Secondary projects */}
         <MoreProjects />
       </div>
+
+      {/* Project detail modal */}
+      <AnimatePresence>
+        {activeProject && (
+          <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
+        )}
+      </AnimatePresence>
 
       <style>{`
         .projects-section {
