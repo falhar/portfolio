@@ -12,7 +12,7 @@ const roles = [
 const stats = [
   { value: '5+', label: 'Years building' },
   { value: '5+', label: 'Companies worked' },
-  { value: '3', label: 'Apps in production' },
+  { value: '9+', label: 'Projects shipped' },
 ]
 
 const fadeUp = {

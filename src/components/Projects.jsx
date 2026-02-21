@@ -276,6 +276,166 @@ function ProjectCard({ project, index }) {
   )
 }
 
+const moreProjects = [
+  {
+    name: 'PlatfirmAI',
+    desc: 'AI-powered platform built and shipped in 5 weeks.',
+    status: 'done',
+    date: 'Oct – Nov 2024',
+    emoji: '🤖',
+  },
+  {
+    name: 'Nova Therapies',
+    desc: 'Therapy services platform. Full delivery from kickoff to launch.',
+    status: 'done',
+    date: 'Sep – Nov 2024',
+    emoji: '✨',
+  },
+  {
+    name: 'Safety Roof Anchor',
+    desc: 'Safety equipment product & compliance web platform.',
+    status: 'done',
+    date: 'Sep – Nov 2024',
+    emoji: '🏗️',
+  },
+  {
+    name: 'Frootmap',
+    desc: 'Produce discovery & mapping platform, ongoing feature development.',
+    status: 'progress',
+    date: 'Nov 2024 – present',
+    emoji: '🥑',
+  },
+  {
+    name: 'Internal Webs',
+    desc: 'Internal tools & websites for SDT, Vafe, and Upscalix.',
+    status: 'maintenance',
+    date: 'Jul – Dec 2024',
+    emoji: '🌐',
+  },
+  {
+    name: 'TGOC',
+    desc: 'Delivered and handed off to client.',
+    status: 'done',
+    date: '2024',
+    emoji: '📦',
+  },
+]
+
+const statusMap = {
+  done:        { label: 'Shipped', color: '#10b981' },
+  progress:    { label: 'In progress', color: '#6366f1' },
+  maintenance: { label: 'Maintenance', color: '#f59e0b' },
+}
+
+function MoreProjects() {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
+
+  return (
+    <motion.div
+      ref={ref}
+      className="more-projects"
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.2 }}
+    >
+      <div className="more-label">
+        <span className="section-label" style={{ marginBottom: 0 }}>More work</span>
+      </div>
+      <div className="more-grid">
+        {moreProjects.map((p, i) => (
+          <motion.div
+            key={p.name}
+            className="more-card glass"
+            initial={{ opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4, delay: 0.1 + i * 0.07 }}
+            whileHover={{ y: -3, transition: { duration: 0.2 } }}
+          >
+            <div className="more-card-top">
+              <span className="more-emoji">{p.emoji}</span>
+              <span
+                className="more-status"
+                style={{ color: statusMap[p.status].color, borderColor: statusMap[p.status].color + '44' }}
+              >
+                {statusMap[p.status].label}
+              </span>
+            </div>
+            <p className="more-name">{p.name}</p>
+            <p className="more-desc">{p.desc}</p>
+            <p className="more-date">{p.date}</p>
+          </motion.div>
+        ))}
+      </div>
+
+      <style>{`
+        .more-projects {
+          margin-top: 4rem;
+          padding-top: 3rem;
+          border-top: 1px solid var(--border);
+        }
+        .more-label {
+          margin-bottom: 1.5rem;
+        }
+        .more-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+          gap: 1rem;
+        }
+        .more-card {
+          padding: 1.25rem;
+          border-radius: 12px;
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+          transition: box-shadow 0.25s;
+        }
+        .more-card:hover {
+          box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .more-card-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 0.25rem;
+        }
+        .more-emoji {
+          font-size: 1.25rem;
+          line-height: 1;
+        }
+        .more-status {
+          font-family: 'Fira Code', monospace;
+          font-size: 0.65rem;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          padding: 0.2rem 0.5rem;
+          border-radius: 100px;
+          border: 1px solid;
+        }
+        .more-name {
+          font-size: 0.95rem;
+          font-weight: 600;
+          color: var(--text);
+        }
+        .more-desc {
+          font-size: 0.8rem;
+          color: var(--text-muted);
+          line-height: 1.6;
+          flex-grow: 1;
+        }
+        .more-date {
+          font-family: 'Fira Code', monospace;
+          font-size: 0.68rem;
+          color: var(--text-muted);
+          opacity: 0.6;
+          margin-top: 0.25rem;
+        }
+      `}</style>
+    </motion.div>
+  )
+}
+
 export default function Projects() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
@@ -297,8 +457,8 @@ export default function Projects() {
             <span className="grad-text">shipped in production.</span>
           </h2>
           <p className="section-sub">
-            Three products built end-to-end — from architecture to deployment —
-            over the past year at Upscalix.
+            Featured products built over the past year at Upscalix — from
+            architecture to deployment. Scroll down for more.
           </p>
         </motion.div>
 
@@ -307,6 +467,9 @@ export default function Projects() {
             <ProjectCard key={p.id} project={p} index={i} />
           ))}
         </div>
+
+        {/* Secondary projects */}
+        <MoreProjects />
       </div>
 
       <style>{`
