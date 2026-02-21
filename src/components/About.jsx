@@ -4,12 +4,12 @@ import { motion, useInView } from 'framer-motion'
 const techGroups = [
   {
     label: 'Frontend',
-    items: ['React', 'Next.js', 'Vite', 'TailwindCSS', 'Framer Motion', 'Chakra UI'],
+    items: ['React', 'Next.js', 'Vite', 'TailwindCSS', 'Ant Design', 'Chakra UI'],
     accent: '#6366f1',
   },
   {
     label: 'Backend',
-    items: ['Node.js', 'Express', 'GraphQL', 'Apollo', 'REST APIs', 'Microservices'],
+    items: ['Node.js', 'Express', 'PHP', 'SilverStripe', 'Django', 'FastAPI', 'GraphQL', 'REST APIs'],
     accent: '#22d3ee',
   },
   {
@@ -19,12 +19,12 @@ const techGroups = [
   },
   {
     label: 'Data & Cloud',
-    items: ['PostgreSQL', 'Redis', 'Elasticsearch', 'Docker', 'GitHub Actions', 'CI/CD'],
+    items: ['PostgreSQL', 'MySQL', 'Redis', 'Elasticsearch', 'Sequelize', 'Docker', 'AWS', 'CI/CD'],
     accent: '#f59e0b',
   },
   {
     label: 'Integrations',
-    items: ['Stripe', 'Azure AD', 'Apple Wallet', 'Google Wallet', 'MS Dynamics', 'Google Maps'],
+    items: ['Stripe Connect', 'Azure AD', 'Apple Wallet', 'Google Wallet', 'MS Dynamics', 'PayPal'],
     accent: '#10b981',
   },
 ]
@@ -87,30 +87,66 @@ export default function About() {
           </h2>
           <div className="about-text">
             <p>
-              I&apos;m a full stack developer at{' '}
-              <span className="about-highlight">Upscalix</span>, where I design
-              and ship complete digital products — from database schemas and REST/GraphQL
-              APIs to pixel-perfect React interfaces and native mobile apps.
+              Mathematics graduate from{' '}
+              <span className="about-highlight">Universitas Diponegoro</span> turned
+              full stack developer. I started in backend engineering and grew into
+              owning full product stacks — APIs, frontends, databases, and deployments.
             </p>
             <p>
-              Over the past year I shipped three production apps: a dance &amp; fitness
-              marketplace with iOS/Android support, a smart gym platform with IoT smart lock
-              control, and an enterprise digital card product integrating Apple &amp; Google Wallet.
+              Currently at <span className="about-highlight">Upscalix</span> as
+              Full-stack Developer, while also doing freelance backend work for{' '}
+              <span className="about-highlight">humanID</span> (a privacy-first
+              auth platform). Over 5 years I&apos;ve shipped across startups and agencies
+              in Indonesia — backend-first, full-stack-minded.
             </p>
             <p>
-              I care about clean architecture, developer experience, and code that&apos;s
-              easy to hand off. When I&apos;m not writing code I&apos;m reading about
-              distributed systems or playing with new dev tools.
+              I pick up new stacks fast, care deeply about clean APIs, and believe
+              good code is code someone else can confidently change.
             </p>
           </div>
 
-          {/* Mini timeline */}
+          {/* Timeline */}
           <div className="timeline">
+            <div className="timeline-item">
+              <div className="timeline-dot timeline-dot--active" />
+              <div>
+                <p className="timeline-role">Full-stack Developer</p>
+                <p className="timeline-company">Upscalix · Jul 2023 – Present</p>
+              </div>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-dot timeline-dot--active" />
+              <div>
+                <p className="timeline-role">Software Developer · Freelance</p>
+                <p className="timeline-company">humanID · Dec 2023 – Present</p>
+              </div>
+            </div>
             <div className="timeline-item">
               <div className="timeline-dot" />
               <div>
-                <p className="timeline-role">Full Stack Developer</p>
-                <p className="timeline-company">Upscalix · 2023 – Present</p>
+                <p className="timeline-role">Backend Developer · Freelance</p>
+                <p className="timeline-company">BetterSocial · May – Oct 2023</p>
+              </div>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-dot" />
+              <div>
+                <p className="timeline-role">Back End Developer</p>
+                <p className="timeline-company">Upscalix · Sep 2022 – Jul 2023</p>
+              </div>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-dot" />
+              <div>
+                <p className="timeline-role">Backend Developer · Freelance</p>
+                <p className="timeline-company">Potatos Studio · Oct 2021 – Apr 2023</p>
+              </div>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-dot" />
+              <div>
+                <p className="timeline-role">Backend Engineer</p>
+                <p className="timeline-company">Widya Robotics · Mar 2021 – Sep 2022</p>
               </div>
             </div>
           </div>
@@ -163,7 +199,7 @@ export default function About() {
           margin-top: 2rem;
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 1.1rem;
           border-left: 1px solid var(--border);
           padding-left: 1.5rem;
         }
@@ -180,8 +216,11 @@ export default function About() {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: var(--indigo);
+          background: var(--text-muted);
           border: 2px solid var(--bg);
+        }
+        .timeline-dot--active {
+          background: var(--indigo);
           box-shadow: 0 0 0 2px var(--indigo)66;
         }
         .timeline-role {

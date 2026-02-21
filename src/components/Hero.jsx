@@ -10,8 +10,8 @@ const roles = [
 ]
 
 const stats = [
-  { value: '3+', label: 'Years building' },
-  { value: '10+', label: 'Products shipped' },
+  { value: '5+', label: 'Years building' },
+  { value: '5+', label: 'Companies worked' },
   { value: '3', label: 'Apps in production' },
 ]
 
